@@ -1,0 +1,26 @@
+<h3> 글 쓰기 </h3>
+<form method='POST'>
+    {% csrf_token %}
+    
+    <div clss ="form-group">
+        <label for = "title">제목</label>
+        
+        <input type="text" class="form-control" name="title" id="title"
+                value="{{ form.title.value | default_if_none:'' }}">
+    </div>
+
+    <div clss ="form-group">
+        <label for = "content">내용</label>
+        <select name="content">
+            <option value=""> -선택- </option>
+            <option value="S"> 소형견 </option>
+            <option value="M"> 중형견 </option>
+            <option value="L"> 대형견 </option>
+        </select>
+        {% comment %} <input type="text" class="form-control" name="content" id="content"
+                value="{{ form.content.value | default_if_none:'' }}"> {% endcomment %}
+    </div> 
+
+
+    <input type="submit" value="enroll">
+</form>

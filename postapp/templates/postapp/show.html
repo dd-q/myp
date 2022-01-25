@@ -1,0 +1,6 @@
+<h1> 제목 : {{ post.title }}</h1>
+{{ post.created_at }}<br/>
+{{ post.content|linebreaks }}
+
+<a href="{% url 'postlist' %}"> 목록으로 이동 </a><br/>
+<a href="{% url 'postupdate' post.id %}"> 수정 </a>
