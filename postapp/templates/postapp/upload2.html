@@ -1,0 +1,6 @@
+<form action="{% url 'postapp:upload2' %}" method="post"
+enctype="multipart/form-data">
+{% csrf_token %}          <!--여러개 업로드 할 수 있는-->
+<input type="file" name="file" multiple>
+<input type="submit" value="전송">
+</form>

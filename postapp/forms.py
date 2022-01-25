@@ -6,3 +6,8 @@ class PostForm(forms.ModelForm):
         model = Post
         fields = ['title', 'content']
         labels = {'title':'제목', 'content':'내용'}
+
+class UploadFileForm(forms.ModelForm):
+    class Meta:
+        model = UploadFile
+        fields = ['file']

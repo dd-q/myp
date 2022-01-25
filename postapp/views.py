@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render, redirect
-from sympy import re
 from .models import *
+
 
 def postlist(request):
     posts = Post.objects.all()
@@ -19,7 +19,7 @@ def show(request, id):
     return render(request, 'postapp/show.html', {'post':post})
 
 # CRUD
-from .forms import PostForm
+from .forms import *
 
 
 def new(request):
@@ -56,5 +56,49 @@ def postupdate(request, id):
         form = PostForm(instance=post)   # get 으로 요청이 들어온 경우, post 에 기존에 입력되어있떤 내용을 form 에 담아서 edit.html 을 렌더링
         return render(request, 'postapp/edit.html',{'form':form})
 
+# img upload
 
+def upload1(request):
+    if request.method == 'POST':
+        upload_file = request.FILES.get('file') # 파일 객체
+        name = upload_file.name # 파일 이름
+        size = upload_file.size # 파일 크기
+
+        with open(name, 'wb') as file: # 파일 저장
+            for chunk in upload_file.chunks():
+                file.write(chunk)
+
+        return HttpResponse('%s<br>%s' % (name, size))
+    return render(request, 'postapp/upload1.html')
+
+
+def upload2(request):
+    if request.method == 'POST':
+        upload_files = request.FILES.getlist('file')
+        result = ''
+        for upload_file in upload_files:
+            name = upload_file.name
+            size = upload_file.size
+
+            with open(name, 'wb') as file:
+                for chunk in upload_file.chunks():
+                    file.write(chunk)
+            result += '%s<br>%s<hr>' % (name, size)
+
+        return HttpResponse(result)
+    return render(request, 'postapp/upload2.html')
+
+
+def upload3(request):
+    if request.method == 'POST':
+        form = UploadFileForm(request.POST, request.FILES)
+        if form.is_valid():
+            uploadFile = form.save(commit=False)
+            name = uploadFile.file.name
+            size = uploadFile.file.size
+            return HttpResponse('%s<br>%s' % (name, size))
+    else:
+        form = UploadFileForm()
+        return render(
+            request, 'postapp/upload3.html', {'form': form})
 
